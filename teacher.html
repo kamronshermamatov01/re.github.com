@@ -1,0 +1,937 @@
+    <!DOCTYPE html>
+    <html lang="uz">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>O'qituvchi Sahifasi</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-color: #4361ee;
+                --secondary-color: #3a0ca3;
+                --accent-color: #f72585;
+                --success-color: #4cc9f0;
+                --warning-color: #ffd60a;
+                --text-color: #2b2d42;
+                --light-bg: #f8f9fa;
+                --white: #ffffff;
+                --border-color: #e9ecef;
+                --shadow-color: rgba(0, 0, 0, 0.1);
+                --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            body {
+                background-color: var(--light-bg);
+                color: var(--text-color);
+                line-height: 1.6;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 2rem;
+            }
+
+            h3 {
+                color: var(--primary-color);
+                margin-bottom: 1.5rem;
+                font-size: 2rem;
+                font-weight: 600;
+                text-align: center;
+                position: relative;
+                padding-bottom: 10px;
+            }
+
+            h3::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 50px;
+                height: 3px;
+                background: var(--gradient);
+                border-radius: 2px;
+            }
+
+            /* Menu Styles */
+            .menu {
+                background: var(--gradient);
+                padding: 1rem;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                margin-bottom: 2rem;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .menu a {
+                color: var(--white);
+                text-decoration: none;
+                padding: 0.8rem 1.5rem;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                font-weight: 500;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            .menu a:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Form Styles */
+            form {
+                background-color: var(--white);
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                margin-bottom: 2rem;
+                transition: transform 0.3s ease;
+            }
+
+            form:hover {
+                transform: translateY(-5px);
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+                position: relative;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 0.8rem;
+                color: var(--text-color);
+                font-weight: 500;
+                font-size: 0.95rem;
+            }
+
+            input, select {
+                width: 100%;
+                padding: 1rem;
+                border: 2px solid var(--border-color);
+                border-radius: 8px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background-color: var(--light-bg);
+            }
+
+            input:focus, select:focus {
+                border-color: var(--primary-color);
+                outline: none;
+                box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+                background-color: var(--white);
+            }
+
+            /* Button Styles */
+            button {
+                background: var(--gradient);
+                color: var(--white);
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1rem;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            }
+
+            /* Camera Section Styles */
+            #camera {
+                display: none;
+                background-color: var(--white);
+                padding: 2rem;
+                border-radius: 15px 15px 0 0;
+                box-shadow: 0 -4px 15px var(--shadow-color);
+                margin: 0;
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                animation: slideUp 0.3s ease;
+            }
+
+            @keyframes slideUp {
+                from {
+                    transform: translateY(100%);
+                }
+                to {
+                    transform: translateY(0);
+                }
+            }
+
+            #video {
+                width: 100%;
+                max-width: 640px;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+                box-shadow: 0 4px 15px var(--shadow-color);
+            }
+
+            #snap {
+                background: var(--success-color);
+                margin: 1rem auto;
+                display: block;
+                font-size: 1.1rem;
+            }
+
+            #snap:hover {
+                background: #3db4d8;
+            }
+
+            /* Student Image Preview */
+            #studentImage {
+                width: 180px;
+                height: 180px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 4px solid var(--primary-color);
+                margin: 1rem auto;
+                display: block;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                transition: transform 0.3s ease;
+            }
+
+            #studentImage:hover {
+                transform: scale(1.05);
+            }
+
+            /* Notification Styles */
+            #notification {
+                display: none;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: var(--gradient);
+                color: var(--white);
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+                font-weight: 500;
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%) translateY(-50%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0) translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            /* Table Styles */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: var(--white);
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                margin-bottom: 2rem;
+            }
+
+            th, td {
+                padding: 1rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            th {
+                background: var(--gradient);
+                color: var(--white);
+                font-weight: 500;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+                letter-spacing: 0.5px;
+            }
+
+            tr:hover {
+                background-color: var(--light-bg);
+            }
+
+            /* Search Results Styles */
+            #searchResults {
+                list-style: none;
+                background: var(--white);
+                border-radius: 8px;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                margin-top: 1rem;
+                overflow: hidden;
+            }
+
+            #searchResults li {
+                padding: 1rem;
+                border-bottom: 1px solid var(--border-color);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            #searchResults li:hover {
+                background-color: var(--light-bg);
+                padding-left: 1.5rem;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .container {
+                    padding: 1rem;
+                }
+
+                h3 {
+                    font-size: 1.5rem;
+                }
+
+                form {
+                    padding: 1.5rem;
+                }
+
+                button {
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .menu {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+
+                .menu a {
+                    width: 100%;
+                    text-align: center;
+                }
+
+                #camera {
+                    padding: 1rem;
+                }
+
+                #video {
+                    width: 100%;
+                    height: auto;
+                }
+
+                table {
+                    display: block;
+                    overflow-x: auto;
+                }
+            }
+
+            /* Custom Scrollbar */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: var(--light-bg);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--secondary-color);
+            }
+
+            /* Navbar Styles */
+            .navbar {
+                background: var(--gradient);
+                padding: 1rem 2rem;
+                box-shadow: 0 2px 10px var(--shadow-color);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .navbar-brand {
+                color: var(--white);
+                font-size: 1.5rem;
+                font-weight: 600;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .navbar-brand i {
+                font-size: 1.8rem;
+            }
+
+            .navbar-profile {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                color: var(--white);
+            }
+
+            .profile-info {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .profile-info img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 2px solid var(--white);
+            }
+
+            .logout-btn {
+                background: rgba(255, 255, 255, 0.2);
+                color: var(--white);
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                transition: all 0.3s ease;
+            }
+
+            .logout-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: translateY(-2px);
+            }
+
+            /* Adjust container for fixed navbar */
+            .container {
+                margin-top: 80px;
+            }
+
+            /* Responsive navbar */
+            @media (max-width: 768px) {
+                .navbar {
+                    padding: 1rem;
+                }
+
+                .navbar-brand {
+                    font-size: 1.2rem;
+                }
+
+                .profile-info span {
+                    display: none;
+                }
+            }
+        </style>
+        <script defer src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    </head>
+
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <a href="#" class="navbar-brand">
+                <i class="fas fa-chalkboard-teacher"></i>
+                O'qituvchi paneli
+            </a>
+            <div class="navbar-profile">
+                <div class="profile-info">
+                    <img src="https://via.placeholder.com/40" alt="Profile">
+                    <span id="teacherName">O'qituvchi</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Chiqish
+                </button>
+            </div>
+        </nav>
+
+        <h3>O'qituvchi Profili</h3>
+        <div id="teacherProfile" style="
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            max-width: 800px;
+            margin: 2rem auto;
+            display: grid;
+            gap: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6"></div>
+        <div class="container">
+            <div class="menu">
+
+                <a href="attendance.html">Занятие</a> <!-- Bu tugma yo'qlama sahifasiga yo'naltiradi -->
+            </div>
+            <button id="editTeacher">Tahrirlash</button>
+
+            <form id="editTeacherForm" style="display: none; 
+                background: var(--white);
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px var(--shadow-color);
+                max-width: 500px;
+                margin: 2rem auto;">
+                <label style="display: block; margin-bottom: 1rem;">
+                    Ism: <input type="text" id="editTeacherFirstName" style="
+                        width: 100%;
+                        padding: 0.8rem;
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        margin-top: 0.5rem;">
+                </label>
+                <label style="display: block; margin-bottom: 1rem;">
+                    Familiya: <input type="text" id="editTeacherLastName" style="
+                        width: 100%;
+                        padding: 0.8rem;
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        margin-top: 0.5rem;">
+                </label>
+                <label style="display: block; margin-bottom: 1rem;">
+                    Telefon: <input type="text" id="editTeacherPhone" style="
+                        width: 100%;
+                        padding: 0.8rem;
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        margin-top: 0.5rem;">
+                </label>
+                <button type="submit" style="
+                    background: var(--success-color);
+                    margin-right: 1rem;">Saqlash</button>
+                <button type="button" id="cancelEditTeacher" style="
+                    background: var(--accent-color);">Bekor qilish</button>
+            </form>
+
+            <h3>Parolni o'zgartirish</h3>
+            <form id="changePasswordForm">
+                <label>Eski parol: <input type="password" id="oldPassword"></label>
+                <label>Yangi parol: <input type="password" id="newPassword"></label>
+                <label>Yangi parolni tasdiqlang: <input type="password" id="confirmNewPassword"></label>
+                <button type="submit">Parolni almashtirish</button>
+            </form>
+
+            <h3>O'quvchini qidirish</h3>
+            <input type="text" id="searchStudent" placeholder="Ism yoki familiya bo'yicha qidiring">
+            <ul id="searchResults"></ul>
+
+            <!-- O'quvchi profili (Tahrirlash) -->
+            <section id="studentProfileSection" style="display: none;">
+                <h2>O'quvchi Profili</h2>
+                <div id="studentProfile"></div> <!-- Bu yerga o'quvchi ma'lumotlari chiqadi -->
+                <button id="editStudent">Tahrirlash</button>
+
+                <form id="editStudentForm" style="display: none;">
+                    <label>Ism: <input type="text" id="editFirstName"></label>
+                    <label>Familiya: <input type="text" id="editLastName"></label>
+                    <label>Telefon: <input type="text" id="editPhone"></label>
+                    <label>Ota-onasi telefon: <input type="text" id="editParentPhone"></label>
+                    <label>Tug'ilgan yili: <input type="text" id="editBirthYear"></label>
+                    <label>Maktab: <input type="text" id="editSchool"></label>
+                    <label>Rasm: <input type="file" id="editStudentImage" accept="image/*" capture="camera"></label>
+                    <img id="studentImage" src="" alt="Student Image" style="width: 100px; height: 100px;">
+                    <button type="submit">Saqlash</button>
+                    <button type="button" id="cancelEdit">Bekor qilish</button>
+                </form>
+            </section>
+
+            <div id="notification"></div>
+            <div id="camera">
+                <video id="video" autoplay></video>
+                <canvas id="faceOverlay"></canvas>
+                <button id="snap">Rasimga olish</button>
+                <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+            </div>
+
+            <form id="addCourseForm">
+                <h3>Kurs qo'shish</h3>
+                <label for="courseName">Kurs nomi:</label>
+                <input type="text" id="courseName" required>
+
+                <label for="courseDuration">Davomiyligi (oylar):</label>
+                <input type="number" id="courseDuration" required>
+
+                <label for="coursePrice">Narxi (so'm):</label>
+                <input type="number" id="coursePrice" required>
+
+                <label for="courseDays">Dars kunlari:</label>
+                <input type="text" id="courseDays" placeholder="Dushanba, Chorshanba..." required>
+
+                <label for="courseTime">Dars vaqti:</label>
+                <input type="text" id="courseTime" placeholder="10:00 - 12:00" required>
+
+                <button type="submit">Kurs qo'shish</button>
+            </form>
+
+            <!-- Kurslar ro'yxati -->
+            <h3>Mening kurslarim</h3>
+            <table id="coursesTable">
+                <tr>
+                    <th>Nomi</th>
+                    <th>Davomiyligi</th>
+                    <th>Narxi</th>
+                    <th>Dars kunlari</th>
+                    <th>Vaqti</th>
+                    <th>O'quvchilar</th>
+                    <th>O'chirish</th>
+                </tr>
+            </table>
+
+            <!-- O'quvchilarni kursga qo'shish -->
+            <h3>O'quvchini kursga qo'shish</h3>
+            <form id="addStudentToCourseForm">
+                <label for="selectCourse">Kursni tanlang:</label>
+                <select id="selectCourse"></select>
+
+                <label for="selectStudent">O'quvchini tanlang:</label>
+                <select id="selectStudent"></select>
+
+                <button type="submit">Qo'shish</button>
+            </form>
+
+            <script src="/static/js/teacher.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+                    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+                    const teacherProfile = document.getElementById("teacherProfile");
+                    const editTeacherForm = document.getElementById("editTeacherForm");
+
+                    // Agar foydalanuvchi yo'q yoki roli teacher bo'lmasa, login sahifasiga yuborish
+                    if (!currentUser || currentUser.role !== "teacher") {
+                        window.location.href = "index.html";
+                    }
+
+                    function loadTeacherProfile() {
+                        teacherProfile.innerHTML = `
+                    <p><strong>Ism:</strong> ${currentUser.firstName}</p>
+                    <p><strong>Familiya:</strong> ${currentUser.lastName}</p>
+                    <p><strong>Telefon:</strong> ${currentUser.phone}</p>
+                `;
+
+                        document.getElementById("editTeacherFirstName").value = currentUser.firstName;
+                        document.getElementById("editTeacherLastName").value = currentUser.lastName;
+                        document.getElementById("editTeacherPhone").value = currentUser.phone;
+                    }
+
+                    document.getElementById("editTeacher").addEventListener("click", function () {
+                        editTeacherForm.style.display = "block";
+                    });
+
+                    document.getElementById("cancelEditTeacher").addEventListener("click", function () {
+                        editTeacherForm.style.display = "none";
+                    });
+
+                    // O'qituvchi profilini saqlash
+                    editTeacherForm.addEventListener("submit", function (event) {
+                        event.preventDefault();
+
+                        let updatedFirstName = document.getElementById("editTeacherFirstName").value.trim();
+                        let updatedLastName = document.getElementById("editTeacherLastName").value.trim();
+                        let updatedPhone = document.getElementById("editTeacherPhone").value.trim();
+
+                        if (!updatedFirstName || !updatedLastName || !updatedPhone) {
+                            alert("Barcha maydonlarni to'ldiring!");
+                            return;
+                        }
+
+                        // currentUser ma'lumotlarini yangilash
+                        currentUser.firstName = updatedFirstName;
+                        currentUser.lastName = updatedLastName;
+                        currentUser.phone = updatedPhone;
+
+                        // localStorage dagi users ma'lumotlarini yangilash
+                        let userIndex = users.findIndex(user => user.username === currentUser.username);
+                        if (userIndex !== -1) {
+                            users[userIndex] = currentUser;
+                            localStorage.setItem("users", JSON.stringify(users));
+                            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+                        }
+
+                        alert("Profil yangilandi!");
+                        editTeacherForm.style.display = "none";
+                        loadTeacherProfile();
+                    });
+
+                    // Parolni o'zgartirish
+                    document.getElementById("changePasswordForm").addEventListener("submit", function (event) {
+                        event.preventDefault();
+
+                        let oldPassword = document.getElementById("oldPassword").value.trim();
+                        let newPassword = document.getElementById("newPassword").value.trim();
+                        let confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
+
+                        if (!oldPassword || !newPassword || !confirmNewPassword) {
+                            alert("Barcha maydonlarni to'ldiring!");
+                            return;
+                        }
+
+                        if (newPassword !== confirmNewPassword) {
+                            alert("Yangi parol mos kelmadi!");
+                            return;
+                        }
+
+                        if (currentUser.password !== oldPassword) {
+                            alert("Eski parol noto'g'ri!");
+                            return;
+                        }
+
+                        // Parolni yangilash
+                        currentUser.password = newPassword;
+
+                        let userIndex = users.findIndex(user => user.username === currentUser.username);
+                        if (userIndex !== -1) {
+                            users[userIndex] = currentUser;
+                            localStorage.setItem("users", JSON.stringify(users));
+                            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+                        }
+
+                        alert("Parol muvaffaqiyatli o'zgartirildi!");
+                        document.getElementById("changePasswordForm").reset();
+                    });
+
+                    loadTeacherProfile();
+                });
+                document.addEventListener("DOMContentLoaded", async function () {
+                    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+                    if (!currentUser || currentUser.role !== "teacher") {
+                        window.location.href = "index.html";
+                    }
+
+                    const selectStudent = document.getElementById("selectStudent");
+                    const searchStudentInput = document.getElementById("searchStudent");
+                    const searchResults = document.getElementById("searchResults");
+                    const studentProfileSection = document.getElementById("studentProfileSection");
+                    const studentProfile = document.getElementById("studentProfile");
+
+                    let students = JSON.parse(localStorage.getItem("users")) || [];
+
+                    function loadStudents() {
+                        selectStudent.innerHTML = "<option value=''>O'quvchini tanlang</option>";
+
+                        students.forEach((student, index) => {
+                            if (student.role === "student") {
+                                let option = document.createElement("option");
+                                option.value = index;
+                                option.textContent = `${student.firstName} ${student.lastName}`;
+                                selectStudent.appendChild(option);
+                            }
+                        });
+                    }
+
+                    function searchStudent(query) {
+                        searchResults.innerHTML = "";
+                        if (query.trim() === "") return;
+
+                        let filteredStudents = students.filter(user =>
+                            user.role === "student" &&
+                            (user.firstName.toLowerCase().includes(query.toLowerCase()) ||
+                                user.lastName.toLowerCase().includes(query.toLowerCase()))
+                        );
+
+                        filteredStudents.forEach(student => {
+                            let li = document.createElement("li");
+                            li.textContent = `${student.firstName} ${student.lastName}`;
+                            li.addEventListener("click", function () {
+                                showStudentProfile(student);
+                            });
+                            searchResults.appendChild(li);
+                        });
+                    }
+                    function showStudentProfile(student) {
+                        studentProfileSection.style.display = "block";
+
+                        studentProfile.innerHTML = `
+            <p><strong>Ism:</strong> <input type="text" id="editFirstName" value="${student.firstName}"></p>
+            <p><strong>Familiya:</strong> <input type="text" id="editLastName" value="${student.lastName}"></p>
+            <p><strong>Email:</strong> <input type="text" id="editEmail" value="${student.Email || ""}"></p>
+            <p><strong>Username:</strong> <input type="text" id="editUsername" value="${student.username || ""}"></p>
+            <p><strong>Parol:</strong> <input type="password" id="editPassword" value="${student.password || ""}"></p>
+            <p><strong>Role:</strong> <input type="text" id="editRole" value="${student.role || ""}"></p>
+            <p><strong>Manzil:</strong> <input type="text" id="editAddress" value="${student.address || ""}"></p>
+            <p><strong>Shahar:</strong> <input type="text" id="editCity" value="${student.city || ""}"></p>
+            <p><strong>Viloyat:</strong> <input type="text" id="editRegion" value="${student.region || ""}"></p>
+            <p><strong>Post index:</strong> <input type="text" id="editZip" value="${student.zip || ""}"></p>
+            <p><strong>Tug'ilgan joy:</strong> <input type="text" id="editBirthPlace" value="${student.birthPlace || ""}"></p>
+            <p><strong>Passport seriya:</strong> <input type="text" id="editPassportSeries" value="${student.passportSeries || ""}"></p>
+            <p><strong>Passport raqam:</strong> <input type="text" id="editPassportNumber" value="${student.passportNumber || ""}"></p>
+            <p><strong>Passport berilgan sana:</strong> <input type="date" id="editPassportDate" value="${student.passportDate || ""}"></p>
+            <p><strong>Passport amal qilish muddati:</strong> <input type="date" id="editPassportExpire" value="${student.passportExpire || ""}"></p>
+            <p><strong>Millati:</strong> <input type="text" id="editNational" value="${student.national || ""}"></p>
+            <p><strong>Telefon:</strong> <input type="text" id="editPhone" value="${student.phone || ""}"></p>
+            <p><strong>Ota-onasi:</strong> <input type="text" id="editParentName" value="${student.parentName || ""}"></p>
+            <p><strong>Ota-onasi email:</strong> <input type="text" id="editParentEmail" value="${student.parentEmail || ""}"></p>
+            <p><strong>Ota-onasi ish joyi:</strong> <input type="text" id="editParentWork" value="${student.parentWork || ""}"></p>
+            <p><strong>Ota-onasi telefon:</strong> <input type="text" id="editParentPhone" value="${student.parentPhone || ""}"></p>
+            <p><strong>Yashash joyi:</strong> <input type="text" id="editResidence" value="${student.residence || ""}"></p>
+            <p><strong>Tug'ilgan yili:</strong> <input type="text" id="editBirthYear" value="${student.birthYear || ""}"></p>
+            <p><strong>Maktab:</strong> <input type="text" id="editSchool" value="${student.school || ""}"></p>
+            <p><strong>Sinf:</strong> <input type="text" id="editGrade" value="${student.grade || ""}"></p>
+            <p><strong>Rasm:</strong> <input type="file" id="editStudentImage" accept="image/*" capture="camera"></p>
+            <img id="studentImage" src="${student.image || ""}" alt="Student Image" style="width: 100px; height: 100px;">
+            <p><strong>Qo'shilgan sana:</strong> <input type="date" id="editDate" value="${student.date || ""}"></p>
+            <p><strong>Qo'shilgan vaqti:</strong> <input type="time" id="editTime" value="${student.time || ""}"></p>
+            <button onclick="saveStudentInfo('${student.username}')">💾 Saqlash</button>
+        `;
+
+                        const editStudentImage = document.getElementById("editStudentImage");
+                        const studentImage = document.getElementById("studentImage");
+                        const camera = document.getElementById("camera");
+                        const video = document.getElementById("video");
+                        const snapButton = document.getElementById("snap");
+                        const canvas = document.getElementById("canvas");
+                        const ctx = canvas.getContext("2d");
+                        const faceOverlay = document.getElementById("faceOverlay");
+                        const overlayCtx = faceOverlay.getContext("2d");
+
+                        editStudentImage.addEventListener("click", function () {
+                        camera.style.display = "block";
+                        navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(stream => {   
+                            video.srcObject = stream;
+                        })
+                        .catch(error => {
+                            console.error("Kamera ochilmadi:", error);
+                        });
+                    });
+
+
+                        snapButton.addEventListener("click", function () {
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            let imageData = canvas.toDataURL("image/png");
+                            studentImage.src = imageData;
+                            localStorage.setItem("studentImage", imageData);
+
+                            // Stop the camera
+                            let stream = video.srcObject;
+                            let tracks = stream.getTracks();
+                            tracks.forEach(track => track.stop());
+                            camera.style.display = "none";
+
+                            // Display notification
+                            let notification = document.getElementById("notification");
+                            notification.textContent = "Rasim saqlandi";
+                            notification.style.display = "block";
+                        });
+
+                        // Face detection logic
+                        video.addEventListener("play", () => {
+                            const detectFace = async () => {
+                                const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+                                overlayCtx.clearRect(0, 0, faceOverlay.width, faceOverlay.height);
+                                faceapi.draw.drawDetections(faceOverlay, detections);
+                                faceapi.draw.drawFaceLandmarks(faceOverlay, detections);
+                                requestAnimationFrame(detectFace);
+                            };
+                            detectFace();
+                        });
+                    }
+
+                    window.saveStudentInfo = function (username) {
+                        let student = students.find(s => s.username === username);
+                        if (!student) return;
+
+                        student.firstName = document.getElementById("editFirstName").value.trim();
+                        student.lastName = document.getElementById("editLastName").value.trim();
+                        student.Email = document.getElementById("editEmail").value.trim();
+                        student.username = document.getElementById("editUsername").value.trim();
+                        student.password = document.getElementById("editPassword").value.trim();
+                        student.role = document.getElementById("editRole").value.trim();
+                        student.address = document.getElementById("editAddress").value.trim();
+                        student.city = document.getElementById("editCity").value.trim();
+                        student.region = document.getElementById("editRegion").value.trim();
+                        student.zip = document.getElementById("editZip").value.trim();
+                        student.birthPlace = document.getElementById("editBirthPlace").value.trim();
+                        student.passportSeries = document.getElementById("editPassportSeries").value.trim();
+                        student.passportNumber = document.getElementById("editPassportNumber").value.trim();
+                        student.passportDate = document.getElementById("editPassportDate").value.trim();
+                        student.passportExpire = document.getElementById("editPassportExpire").value.trim();
+                        student.national = document.getElementById("editNational").value.trim();
+                        student.phone = document.getElementById("editPhone").value.trim();
+                        student.parentName = document.getElementById("editParentName").value.trim();
+                        student.parentEmail = document.getElementById("editParentEmail").value.trim();
+                        student.parentWork = document.getElementById("editParentWork").value.trim();
+                        student.parentPhone = document.getElementById("editParentPhone").value.trim();
+                        student.residence = document.getElementById("editResidence").value.trim();
+                        student.birthYear = document.getElementById("editBirthYear").value.trim();
+                        student.school = document.getElementById("editSchool").value.trim();
+                        student.grade = document.getElementById("editGrade").value.trim();
+                        student.date = document.getElementById("editDate").value.trim();
+                        student.time = document.getElementById("editTime").value.trim();
+
+                        const editStudentImage = document.getElementById("editStudentImage");
+                        if (editStudentImage.files.length > 0) {
+                            const file = editStudentImage.files[0];
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                student.image = e.target.result;
+                                localStorage.setItem("users", JSON.stringify(students));
+                                alert("O'quvchi ma'lumotlari saqlandi!");
+                                loadStudents();
+                                searchStudentInput.value = "";
+                                studentProfileSection.style.display = "none";
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            student.image = localStorage.getItem("studentImage");
+                            localStorage.setItem("users", JSON.stringify(students));
+                            alert("O'quvchi ma'lumotlari saqlandi!");
+                            loadStudents();
+                            searchStudentInput.value = "";
+                            studentProfileSection.style.display = "none";
+                        }
+                    };
+                    if (searchStudentInput) {
+                        searchStudentInput.addEventListener("input", function () {
+                            searchStudent(this.value);
+                        });
+                    }
+
+                    loadStudents();
+                });
+
+                function logout() {
+                    localStorage.removeItem("currentUser");
+                    window.location.href = "index.html";
+                }
+
+                // Update teacher name in navbar
+                document.addEventListener("DOMContentLoaded", function() {
+                    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+                    if (currentUser) {
+                        document.getElementById("teacherName").textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+                    }
+                });
+            </script>
+        </div>
+    </body>
+
+    </html>

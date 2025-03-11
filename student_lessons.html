@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O‘quvchi Darslari</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .menu {
+            background: #f4f4f4;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .course-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .lesson-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .present {
+            background-color: #a0e7a0;
+        }
+
+        /* Yashil - keldi */
+        .absent {
+            background-color: #e7a0a0;
+        }
+
+        /* Qizil - kelmadi */
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="menu">
+            <a href="student.html">Ortga</a>
+        </div>
+
+        <h2>Sizning darslaringiz</h2>
+        <div id="coursesList"></div>
+        <h3 id="lessonsTitle" style="display: none;">Dars kunlari</h3>
+        <div id="lessonsList"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser || currentUser.role !== "student") {
+                window.location.href = "index.html";
+            }
+
+            let courses = JSON.parse(localStorage.getItem("courses")) || [];
+            let coursesList = document.getElementById("coursesList");
+            let lessonsList = document.getElementById("lessonsList");
+
+            // O‘quvchi qaysi kurslarda borligini chiqaramiz
+            courses.forEach((course, index) => {
+                if (course.students.some(s => s.id === currentUser.id)) {
+                    let courseItem = document.createElement("div");
+                    courseItem.classList.add("course-item");
+                    courseItem.textContent = course.name;
+                    courseItem.addEventListener("click", function () {
+                        loadLessons(index);
+                    });
+                    coursesList.appendChild(courseItem);
+                }
+            });
+
+            // Kurs bosilganda dars kunlari chiqadi
+            function loadLessons(courseIndex) {
+                lessonsList.innerHTML = "";
+                document.getElementById("lessonsTitle").style.display = "block";
+                let course = courses[courseIndex];
+                let days = course.days.split(",");
+
+                days.forEach((day, index) => {
+                    let lessonItem = document.createElement("div");
+                    lessonItem.classList.add("lesson-item");
+                    lessonItem.textContent = day;
+
+                    // Yo‘qlama natijasini tekshirish
+                    if (course.attendance && course.attendance[index]) {
+                        let studentAttendance = course.attendance[index][currentUser.id];
+                        if (studentAttendance === true) {
+                            lessonItem.classList.add("present");  // ✅ Keldi
+                            lessonItem.textContent += " - ✅ Keldi";
+                        } else if (studentAttendance === false) {
+                            lessonItem.classList.add("absent");   // ❌ Kelmadı
+                            lessonItem.textContent += " - ❌ Kelmadı";
+                        }
+                    }
+
+                    lessonsList.appendChild(lessonItem);
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yo'qlama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --success-color: #4cc9f0;
+            --warning-color: #ffd60a;
+            --text-color: #2b2d42;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #e9ecef;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after, h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Menu Styles */
+        .menu {
+            background: var(--gradient);
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            margin-bottom: 2rem;
+        }
+
+        .menu a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Course and Lesson Items */
+        .course-item, .lesson-item {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-item:hover, .lesson-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            background: var(--light-bg);
+        }
+
+        /* Camera Section */
+        #camera {
+            display: none;
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 640px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        /* Button Styles */
+        button {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        #snap {
+            background: var(--success-color);
+        }
+
+        #absent {
+            background: var(--accent-color);
+        }
+
+        /* Attendance Info */
+        #attendanceInfo {
+            display: none;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            margin: 2rem 0;
+            animation: slideIn 0.3s ease;
+        }
+
+        #attendanceInfo.success {
+            border-left: 5px solid var(--success-color);
+        }
+
+        #attendanceInfo.error {
+            border-left: 5px solid var(--accent-color);
+        }
+
+        #attendanceInfo h3 {
+            color: var(--text-color);
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        #attendanceInfo p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #attendanceInfo strong {
+            min-width: 100px;
+            color: var(--primary-color);
+        }
+
+        /* Notification */
+        #notification {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h2, h3 {
+                font-size: 1.5rem;
+            }
+
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            #camera {
+                padding: 1rem;
+            }
+
+            #video {
+                width: 100%;
+                height: auto;
+            }
+
+            .course-item, .lesson-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="menu">
+            <a href="teacher.html">Ortga</a>
+        </div>
+
+        <h2>Kurslar</h2>
+        <div id="coursesList"></div>
+
+        <h3 id="lessonsTitle" style="display: none;">Dars kunlari</h3>
+        <div id="lessonsList"></div>
+
+        <h3 id="studentsTitle" style="display: none;">O'quvchilar</h3>
+        <div id="studentsList"></div>
+
+        <div id="camera">
+            <video id="video" autoplay></video>
+            <canvas id="canvas" width="640" height="480"></canvas>
+            <button id="snap">Rasm olish</button>
+            <button id="absent">Kelmadi</button>
+        </div>
+
+
+        <div id="attendanceInfo">
+            <h3>Yo'qlama natijalari</h3>
+            <p><strong>Ism:</strong> <span id="studentName"></span></p>
+            <p><strong>Kurs:</strong> <span id="studentCourse"></span></p>
+            <p><strong>Vaqt:</strong> <span id="attendanceTime"></span></p>
+            <p><strong>Status:</strong> <span id="attendanceStatus"></span></p>
+        </div>
+
+        <div id="notification"></div>
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let courses = JSON.parse(localStorage.getItem("courses")) || [];
+            console.log("Retrieved courses:", courses);
+
+            let coursesList = document.getElementById("coursesList");
+            let lessonsList = document.getElementById("lessonsList");
+            let studentsList = document.getElementById("studentsList");
+            let video = document.getElementById("video");
+            let snapButton = document.getElementById("snap");
+            let absentButton = document.getElementById("absent"); // "Kelmadi" tugmasi
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+
+            if (courses.length === 0) {
+                console.log("No courses found in localStorage.");
+            }
+
+            courses.forEach((course, index) => {
+                let courseItem = document.createElement("div");
+                courseItem.classList.add("course-item");
+                courseItem.textContent = course.name;
+                console.log("Adding course item:", course.name);
+
+                courseItem.addEventListener("click", function () {
+                    console.log("Course item clicked:", course.name);
+                    loadLessons(index);
+                });
+
+                coursesList.appendChild(courseItem);
+            });
+
+            function loadLessons(courseIndex) {
+                lessonsList.innerHTML = "";
+                studentsList.innerHTML = "";
+                document.getElementById("lessonsTitle").style.display = "block";
+                let course = courses[courseIndex];
+                let days = course.days.split(" ");
+
+                console.log("Loading lessons for course:", course.name, "Days:", days);
+
+                days.forEach((day, index) => {
+                    let lessonItem = document.createElement("div");
+                    lessonItem.classList.add("lesson-item");
+                    lessonItem.textContent = day;
+
+                    console.log("Adding lesson item:", day);
+
+                    lessonItem.addEventListener("click", function () {
+                        console.log("Lesson item clicked:", day);
+                        loadStudents(courseIndex, index);
+                    });
+
+                    lessonsList.appendChild(lessonItem);
+                });
+            }
+
+            function loadStudents(courseIndex, dayIndex) {
+                studentsList.innerHTML = "";
+                document.getElementById("studentsTitle").style.display = "block";
+                let course = courses[courseIndex];
+
+                console.log("Loading students for course:", course.name, "Day index:", dayIndex);
+
+                course.students.forEach((student, index) => {
+                    let studentRow = document.createElement("div");
+                    studentRow.innerHTML = `
+                        <span>${student.firstName} ${student.lastName}</span>
+                        <button onclick="startCamera(${courseIndex}, ${dayIndex}, ${index})">Yo'qlama</button>
+                    `;
+
+                    console.log("Adding student row:", student.firstName, student.lastName);
+                    studentsList.appendChild(studentRow);
+                });
+            }
+
+            window.startCamera = function (courseIndex, dayIndex, studentIndex) {
+                document.getElementById("camera").style.display = "block";
+                // **Kamerani yoqish**
+                navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+                    video.srcObject = stream;
+                });
+
+                // **Rasm olish tugmasi ishlashi**
+                snapButton.addEventListener("click", function () {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    let imageData = canvas.toDataURL("image/png"); // Olingan rasm
+
+                    // **LocalStorage-dan oldin saqlangan rasmni olish**
+                    let storedImage = localStorage.getItem("studentImage");
+
+                    if (!storedImage) {
+                        notification.textContent = "Error: Saqlangan rasm topilmadi!";
+                        notification.style.backgroundColor = "red";
+                        return;
+                    }
+
+                    // **Rasmlarni solishtirish**
+                    if (imageData === storedImage) {
+                        notification.textContent = "✅ Yuz tanildi!";
+                        notification.style.backgroundColor = "green";
+                        markAttendance(courseIndex, dayIndex, studentIndex, "Keldi", "Yashil");
+                    } else {
+                        notification.textContent = "❌ Yuz tanimayapti!";
+                        notification.style.backgroundColor = "red";
+                        markAttendance(courseIndex, dayIndex, studentIndex, "Kelmadi", "Qizil");
+                    }
+                });
+
+                // **Kelmadi tugmasi ishlashi**
+                absentButton.addEventListener("click", function () {
+                    notification.textContent = "❌ Kelmadi deb belgilandi!";
+                    notification.style.backgroundColor = "red";
+                    markAttendance(courseIndex, dayIndex, studentIndex, "Kelmadi", "Qizil");
+                });
+
+                function markAttendance(courseIndex, dayIndex, studentIndex, status, color) {
+                    let courses = JSON.parse(localStorage.getItem("courses")) || [];
+                    let course = courses[courseIndex];
+                    let student = course.students[studentIndex];
+
+                    let now = new Date();
+                    let timeString = now.toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+                    if (!course.attendance) course.attendance = {};
+                    if (!course.attendance[dayIndex]) course.attendance[dayIndex] = {};
+                    course.attendance[dayIndex][student.id] = status;
+
+                    localStorage.setItem("courses", JSON.stringify(courses));
+
+                    // Kamera yopiladi
+                    let stream = video.srcObject;
+                    let tracks = stream.getTracks();
+                    tracks.forEach(track => track.stop());
+                    document.getElementById("camera").style.display = "none";
+
+                    // Natija chiqarish
+                    document.getElementById("studentName").textContent = student.firstName + " " + student.lastName;
+                    document.getElementById("studentCourse").textContent = course.name;
+                    document.getElementById("attendanceTime").textContent = timeString;
+                    document.getElementById("attendanceStatus").textContent = status;
+                    document.getElementById("attendanceInfo").style.display = "block";
+                    document.getElementById("attendanceInfo").style.backgroundColor = color === "Yashil" ? "green" : "red";
+                }
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
